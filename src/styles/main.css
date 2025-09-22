@@ -1,0 +1,185 @@
+:root {
+  color-scheme: light;
+}
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  background: #ffffff;
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+}
+#app {
+  max-width: 1024px;
+  margin: 0 auto;
+  min-height: 100vh;
+  background: #fff;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
+}
+
+/* ===== Skip link ===== */
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: auto;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+.skip-link:focus {
+  left: 8px;
+  top: 8px;
+  width: auto;
+  height: auto;
+  padding: 6px 10px;
+  background: #111827;
+  color: #fff;
+  border-radius: 8px;
+}
+/* Sembunyikan di halaman auth sesuai permintaan */
+body.auth .skip-link {
+  display: none !important;
+}
+
+/* ====== APP LAYOUT (Dashboard) ====== */
+nav {
+  display: flex;
+  gap: 1rem;
+  padding: 12px 16px;
+  border-bottom: 1px solid #eee;
+  align-items: center;
+  background: #ffffff;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+nav a {
+  text-decoration: none;
+  color: #111827;
+  opacity: 0.85;
+}
+nav a.active {
+  font-weight: 700;
+  opacity: 1;
+}
+nav .spacer {
+  flex: 1;
+}
+.container {
+  padding: 16px;
+}
+.card {
+  background: #fff;
+  border: 1px solid #eee;
+  border-radius: 14px;
+  padding: 16px;
+}
+.footer {
+  padding: 16px;
+  color: #6b7280;
+  border-top: 1px solid #eee;
+  background: #fff;
+}
+button,
+.btn {
+  background: #0ea5e9;
+  color: #fff;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 10px;
+  cursor: pointer;
+}
+.btn-outline {
+  background: #fff;
+  color: #0ea5e9;
+  border: 1px solid #0ea5e9;
+}
+
+/* ====== FORM COMMON ====== */
+label {
+  display: block;
+  color: #111827;
+  font-size: 0.92rem;
+  margin: 10px 0 6px;
+}
+input,
+textarea,
+select {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  outline: none;
+  background: #fff;
+}
+input:focus,
+textarea:focus,
+select:focus {
+  border-color: #818cf8;
+  box-shadow: 0 0 0 4px rgba(129, 140, 248, 0.25);
+}
+
+/* ====== AUTH LAYOUT (Login/Register) ====== */
+/* Putih polos, tanpa gradient/topbar */
+.auth-shell {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 24px 16px;
+  background: #ffffff;
+}
+.auth-card {
+  margin: 0 auto;
+  max-width: 560px;
+  background: #fff;
+  border: 1px solid #eef2ff;
+  border-radius: 18px;
+  padding: 24px;
+  box-shadow: 0 12px 36px rgba(2, 6, 23, 0.06);
+  width: 100%;
+}
+.auth-title {
+  text-align: center;
+  margin: 0 0 6px;
+}
+.auth-subtitle {
+  margin: 0 0 18px;
+  text-align: center;
+  color: #6b7280;
+  font-size: 0.95rem;
+}
+.input {
+  height: 44px;
+}
+.btn-primary {
+  background: #6366f1;
+  color: #fff;
+  padding: 12px 12px;
+  border: none;
+  border-radius: 12px;
+  width: 100%;
+}
+.btn-primary:focus-visible {
+  outline: 2px solid #6366f1;
+  outline-offset: 2px;
+}
+.auth-bottom {
+  text-align: center;
+  margin-top: 10px;
+  color: #6b7280;
+}
+.auth-bottom a {
+  color: #6366f1;
+  text-decoration: none;
+}
+.auth-bottom a:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 480px) {
+  .auth-card {
+    padding: 18px;
+    border-radius: 14px;
+  }
+}

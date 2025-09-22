@@ -1,0 +1,34 @@
+APP_URL=<url_aplikasi>
+MAP_SERVICE_API_KEY=<api_key>
+APP: StoryMap (Vite, Vanilla JS)
+
+
+HALAMAN:
+- #/login : Login
+- #/register : Register
+- #/ : Home (list + peta, membutuhkan login)
+- #/add : Tambah cerita (form + pilih lokasi via peta, membutuhkan login)
+- #/about : Tentang
+
+
+API: https://story-api.dicoding.dev/v1
+- Auth: POST /register, POST /login (Bearer token disimpan di localStorage)
+- Stories: GET /stories?location=1, POST /stories (multipart: photo, description, lat, lon)
+
+
+PETA: Leaflet dengan 3 tile layer (OSM, Stamen, Esri) + layer control.
+
+
+AKSESIBILITAS:
+- Skip to content, alt text untuk gambar, label untuk semua input, keyboard-accessible.
+- Responsif: 375px / 768px / 1024px, tanpa elemen bertumpuk.
+
+
+CATATAN LOGIN UJI COBA (opsional jika reviewer butuh):
+- Silakan register akun baru melalui halaman Register.
+
+
+BUILD & RUN:
+- npm install
+- npm run dev
+- npm run build
