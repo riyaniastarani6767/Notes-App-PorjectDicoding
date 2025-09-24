@@ -1,10 +1,3 @@
-// export default function AboutPage() {
-//   const el = document.createElement("section");
-//   el.className = "card";
-//   el.innerHTML = `<h1>Tentang</h1><p>StoryMap – SPA + Leaflet + Story API.</p>`;
-//   return el;
-// }
-
 export default {
   async render() {
     return `

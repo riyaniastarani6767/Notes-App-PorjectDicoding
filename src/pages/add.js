@@ -1,32 +1,3 @@
-// export default {
-//   async render() {
-//     return `
-//       <div class="card">
-//         <h2>Tambah Data</h2>
-//         <form id="addForm">
-//           <div style="margin-bottom:8px">
-//             <label>Judul</label><br/>
-//             <input name="title" required style="width:100%;padding:8px;border:1px solid #e5e7eb;border-radius:10px" />
-//           </div>
-//           <div style="margin-bottom:8px">
-//             <label>Deskripsi</label><br/>
-//             <textarea name="desc" rows="4" style="width:100%;padding:8px;border:1px solid #e5e7eb;border-radius:10px"></textarea>
-//           </div>
-//           <button class="btn">Simpan</button>
-//         </form>
-//       </div>
-//     `;
-//   },
-//   async afterRender() {
-//     const form = document.getElementById("addForm");
-//     form?.addEventListener("submit", (e) => {
-//       e.preventDefault();
-//       alert("Data tersimpan (dummy).");
-//       window.location.hash = "#/";
-//     });
-//   },
-// };
-
 import { apiAddStory } from "../api/story.js";
 
 export default {

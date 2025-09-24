@@ -33,7 +33,7 @@ export async function apiLogin({ email, password }) {
 }
 
 export async function apiLogout() {
-  clearAuth(); // API tidak menyediakan logout server; cukup hapus token
+  clearAuth();
 }
 
 export async function apiGetStories({

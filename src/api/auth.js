@@ -1,30 +1,3 @@
-// // API auth minimal (dummy). Ganti dengan API asli jika ada.
-// import { saveAuth, clearAuth } from "../scripts/utils/store.js";
-
-// const BASE_URL = ""; // set kalau perlu, mis. "/api"
-
-// export async function login({ email, password }) {
-//   // Dummy: anggap selalu sukses
-//   await new Promise((r) => setTimeout(r, 300));
-//   saveAuth({ token: "dummy-token", name: email.split("@")[0] || "User" });
-//   return { ok: true };
-// }
-
-// export async function register({ name, email, password }) {
-//   await new Promise((r) => setTimeout(r, 300));
-//   return { ok: true };
-// }
-
-// export async function logout() {
-//   try {
-//     if (BASE_URL) await fetch(`${BASE_URL}/logout`, { method: "POST" });
-//   } catch (e) {
-//     // abaikan error jaringan
-//   } finally {
-//     clearAuth();
-//   }
-// }
-
 const BASE = "https://story-api.dicoding.dev/v1";
 
 export async function apiRegister({ name, email, password }) {

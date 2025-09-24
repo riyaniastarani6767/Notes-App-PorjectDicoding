@@ -96,7 +96,6 @@ button,
   border: 1px solid #0ea5e9;
 }
 
-/* ====== FORM COMMON ====== */
 label {
   display: block;
   color: #111827;
@@ -120,8 +119,6 @@ select:focus {
   box-shadow: 0 0 0 4px rgba(129, 140, 248, 0.25);
 }
 
-/* ====== AUTH LAYOUT (Login/Register) ====== */
-/* Putih polos, tanpa gradient/topbar */
 .auth-shell {
   min-height: 100vh;
   display: grid;
