@@ -13,13 +13,14 @@ export default {
   async render() {
     return `
       <section class="card" aria-labelledby="home-title">
-        <h2 id="home-title">Beranda</h2>
+        <h1 id="home-title">Beranda</h1>
         <div id="map" style="height:360px; border-radius:12px; margin-bottom:12px" aria-label="Peta cerita"></div>
         <ul id="storyList" style="list-style:none; padding:0; margin:0"></ul>
         <p id="homeMsg" role="status" style="margin-top:8px"></p>
       </section>
     `;
   },
+
   async afterRender() {
     const mapEl = document.getElementById("map");
     const listEl = document.getElementById("storyList");

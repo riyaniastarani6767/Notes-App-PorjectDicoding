@@ -79,7 +79,8 @@ async function _render() {
     // APP LAYOUT
     root.innerHTML = `
       ${navbar()}
-      <main class="container">
+      <!-- target skip-link -->
+      <main id="main-content" class="container" tabindex="-1">
         ${await Page.render?.()}
       </main>
       ${footer()}

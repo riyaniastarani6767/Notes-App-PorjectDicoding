@@ -13,9 +13,36 @@
     />
   </head>
   <body>
-    <a class="skip-link" href="#app">Lewati ke konten</a>
+    <!-- Skip to content fokus ke konten utama -->
+    <a class="skip-link" href="#main-content">Lewati ke konten</a>
+
+    <!-- Root SPA -->
     <div id="app"></div>
 
     <script type="module" src="/src/main.js"></script>
+
+    <script>
+      // target main di halaman aktif (tiap page harap punya <main id="main-content">)
+      const skipLink = document.querySelector(".skip-link");
+
+      skipLink?.addEventListener("click", (e) => {
+        e.preventDefault();
+        const main = document.querySelector("#main-content");
+        if (!main) return;
+
+        const hadTabindex = main.hasAttribute("tabindex");
+        if (!hadTabindex) main.setAttribute("tabindex", "-1");
+
+        skipLink.blur();
+        main.focus();
+        main.scrollIntoView({ block: "start", behavior: "smooth" });
+
+        // kalau tadinya tidak punya tabindex, kembalikan agar DOM tetap bersih
+        if (!hadTabindex) {
+          // jeda dikit supaya fokus nggak langsung hilang
+          setTimeout(() => main.removeAttribute("tabindex"), 0);
+        }
+      });
+    </script>
   </body>
 </html>

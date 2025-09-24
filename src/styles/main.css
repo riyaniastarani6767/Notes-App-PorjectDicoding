@@ -180,3 +180,32 @@ select:focus {
     border-radius: 14px;
   }
 }
+/* --- Skip link: tersembunyi tapi muncul saat fokus --- */
+.skip-link {
+  position: absolute;
+  top: -100vh;
+  left: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  background: #111;
+  color: #fff;
+  border-radius: 0.5rem;
+  text-decoration: none;
+  z-index: 1000;
+}
+.skip-link:focus,
+.skip-link:focus-visible {
+  top: 0.5rem;
+  outline: 2px solid #fff;
+  outline-offset: 2px;
+}
+
+/* Jangan hilangkan outline fokus, perjelas saja */
+:focus-visible {
+  outline: 2px solid #2563eb; /* biru yang jelas kontras */
+  outline-offset: 2px;
+}
+
+/* Kontainer main bisa fokus saat skip */
+#main-content {
+  scroll-margin-top: 1rem;
+}

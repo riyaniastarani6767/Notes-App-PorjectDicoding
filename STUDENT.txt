@@ -1,7 +1,3 @@
-APP_URL=<url_aplikasi>
-MAP_SERVICE_API_KEY=<api_key>
-APP: StoryMap (Vite, Vanilla JS)
-
 
 HALAMAN:
 - #/login : Login
@@ -21,7 +17,7 @@ PETA: Leaflet dengan 3 tile layer (OSM, Stamen, Esri) + layer control.
 
 AKSESIBILITAS:
 - Skip to content, alt text untuk gambar, label untuk semua input, keyboard-accessible.
-- Responsif: 375px / 768px / 1024px, tanpa elemen bertumpuk.
+
 
 
 CATATAN LOGIN UJI COBA (opsional jika reviewer butuh):
@@ -32,3 +28,139 @@ BUILD & RUN:
 - npm install
 - npm run dev
 - npm run build
+
+
+
+==============================
+🔹 Cara Ngetes di UI
+==============================
+
+1. Register
+   - Buka halaman Register (#/register).
+   - Isi form:
+     Name: Tester One
+     Email: tester+{timestamp}@gmail.com   (misalnya tester+1727100000000@gmail.com)
+     Password: Testing123
+   - Klik "Create account".
+   Expected:
+   - Redirect ke halaman Login.
+   - Network tab → /v1/register → Status 201 → { "error": false, "message": "User created" }
+
+2. Login
+   - Buka halaman Login (#/login).
+   - Masukkan email & password yang baru dibuat.
+   - Klik "Sign in".
+   Expected:
+   - Redirect ke halaman Beranda (#/).
+   - Navbar muncul "Hai, Tester One".
+   - LocalStorage tersimpan:
+     - auth_token
+     - auth_name
+
+3. Login gagal
+   - Masukkan email/password salah.
+   Expected:
+   - Muncul pesan merah: "Gagal masuk. Periksa email & password."
+   - Network tab → /v1/login → Status 401 Unauthorized.
+
+4. Tambah Story
+   - Buka halaman Tambah (#/add).
+   - Isi form:
+     Description: Cerita test dari UI
+     Latitude: -6.2
+     Longitude: 106.8
+     Foto: upload gambar
+   - Klik Submit.
+   Expected:
+   - Network tab → /v1/stories → Status 201 Created.
+   - Story baru muncul di halaman Beranda (#/) dengan marker di peta.
+
+5. Skip to Content
+   - Tekan Tab di halaman.
+   - Fokus pertama ke link "Lewati ke konten".
+   - Tekan Enter.
+   Expected:
+   - Fokus pindah ke konten utama (elemen #main-content), **bukan** ke /#app.
+
+6. Aksesibilitas Input
+   - Semua input sudah punya label.
+   - Contoh di halaman Tambah:
+     <label>Latitude <input name="lat" ... /></label>
+
+==============================
+🔹 Cara Ngetes di Console
+==============================
+Buka DevTools → Console, ketik `allow pasting` lalu Enter.  
+Kemudian jalankan blok berikut secara berurutan:
+
+1. Register (buat akun baru unik)
+```js
+const BASE = 'https://story-api.dicoding.dev/v1';
+const email = `tester+${Date.now()}@gmail.com`;
+const password = 'Testing123';
+
+fetch(`${BASE}/register`, {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({ name: 'Tester Console', email, password })
+})
+.then(r => r.json().then(body => ({ ok: r.ok, status: r.status, body })))
+.then(res => console.log('REGISTER →', res));
+
+Expected:
+→ { ok: true, status: 201, body: { error: false, message: "User created" } }
+
+2. Login
+fetch(`${BASE}/login`, {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({ email, password })
+})
+.then(r => r.json().then(body => ({ ok: r.ok, status: r.status, body })))
+.then(res => {
+  console.log('LOGIN →', res);
+  if (res.ok && res.body.loginResult?.token) {
+    localStorage.setItem('auth_token', res.body.loginResult.token);
+    localStorage.setItem('auth_name', res.body.loginResult.name || 'User');
+    console.log('Token tersimpan →', localStorage.getItem('auth_token'));
+  }
+});
+Expected:
+→ { ok: true, status: 200, body: { loginResult: { userId, name, token } } }
+
+
+3. Get Stories (pakai token dari login)
+const token = localStorage.getItem('auth_token');
+fetch(`${BASE}/stories?location=1`, {
+  headers: { Authorization: `Bearer ${token}` }
+})
+.then(r => r.json().then(body => ({ ok: r.ok, status: r.status, body })))
+.then(res => {
+  console.log('GET STORIES →', res);
+  console.log('Contoh story pertama:', res.body?.listStory?.[0]);
+});
+Expected:
+→ Status 200, tampil daftar story dengan koordinat.
+
+4. Create Story
+(async () => {
+  const token = localStorage.getItem('auth_token');
+  const imgResp = await fetch('https://picsum.photos/400/300');
+  const imgBlob = await imgResp.blob();
+
+  const fd = new FormData();
+  fd.append('photo', imgBlob, 'photo.jpg');
+  fd.append('description', 'Story dari Console Test');
+  fd.append('lat', '-6.2');
+  fd.append('lon', '106.8');
+
+  const res = await fetch(`${BASE}/stories`, {
+    method: 'POST',
+    headers: { Authorization: `Bearer ${token}` },
+    body: fd
+  });
+  const body = await res.json();
+  console.log('CREATE STORY →', res.status, body);
+})();
+Expected:
+→ CREATE STORY → 201 { error: false, message: "Story created successfully" }
