@@ -21,11 +21,15 @@
 // export default defineConfig({
 //   server: { port: 5173 },
 // });
-
 import { defineConfig } from "vite";
 
 export default defineConfig({
-  base: "/Notes-App-PorjectDicoding/", // ganti sesuai NAMA REPO GitHub-mu
-  server: { port: 5173, host: true },
-  build: { outDir: "dist" },
+  base: "/", // ✅ Netlify tidak butuh subpath
+  server: {
+    port: 5173,
+    host: true,
+  },
+  build: {
+    outDir: "dist", // ✅ hasil build ada di dist
+  },
 });
