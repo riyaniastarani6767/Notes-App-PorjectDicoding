@@ -1,0 +1,8 @@
+{
+  "screenshots": [
+    { "src": "/screenshots/home.png", "sizes": "1280x720", "type": "image/png", "form_factor": "wide" }
+  ],
+  "shortcuts": [
+    { "name": "Tambah", "short_name": "Tambah", "url": "/#/tambah", "icons": [{ "src": "/icons/icon-192.png", "sizes":"192x192" }] }
+  ]
+}

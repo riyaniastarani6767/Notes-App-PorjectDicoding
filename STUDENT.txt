@@ -166,4 +166,4 @@ Expected:
 → CREATE STORY → 201 { error: false, message: "Story created successfully" }
 
 
-https://<username>.github.io/Notes-App-PorjectDicoding/
+notes-app-projectdicoding.netlify.app
