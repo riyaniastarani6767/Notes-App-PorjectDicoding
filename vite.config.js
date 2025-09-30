@@ -3,7 +3,7 @@ import { defineConfig } from "vite";
 export default defineConfig({
   base: "/", // ✅ Netlify tidak butuh subpath
   server: {
-    port: 5173,
+    port: 5174,
     host: true,
   },
   build: {
