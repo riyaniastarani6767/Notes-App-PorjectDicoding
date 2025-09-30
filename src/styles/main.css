@@ -209,3 +209,21 @@ select:focus {
 #main-content {
   scroll-margin-top: 1rem;
 }
+/* --- Fix: pastikan map ada di atas elemen lain --- */
+#map {
+  position: relative;
+  z-index: 10;
+}
+
+/* Leaflet membuat beberapa pane; naikkan semuanya */
+.leaflet-container,
+.leaflet-pane,
+.leaflet-top,
+.leaflet-bottom {
+  z-index: 10 !important;
+}
+
+/* Pastikan layout CRD tidak menimpa map */
+.grid-2col {
+  position: static;
+}
