@@ -1,4 +1,3 @@
-// Ganti dengan VAPID public key dari REST API Dicoding kamu:
 const VAPID_PUBLIC_KEY = "REPLACE_WITH_VAPID_PUBLIC_KEY";
 
 function urlBase64ToUint8Array(base64String) {
@@ -27,8 +26,7 @@ export async function subscribePush() {
     userVisibleOnly: true,
     applicationServerKey: urlBase64ToUint8Array(VAPID_PUBLIC_KEY),
   });
-  // TODO: kirim sub ke server kamu (API Dicoding) agar bisa push dari backend
-  // await fetch("/api/push/subscribe", { method:"POST", body: JSON.stringify(sub), headers: {"Content-Type":"application/json"} });
+
   return sub;
 }
 
@@ -37,8 +35,6 @@ export async function unsubscribePush() {
   const sub = await reg.pushManager.getSubscription();
   if (sub) {
     await sub.unsubscribe();
-    // TODO: beritahu server untuk hapus sub
-    // await fetch("/api/push/unsubscribe", { method:"POST", body:JSON.stringify({endpoint: sub.endpoint}), headers: {"Content-Type":"application/json"} });
   }
 }
 
