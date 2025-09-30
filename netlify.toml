@@ -1,8 +1,23 @@
+# netlify.toml (bersih, tanpa duplikasi)
+
 [build]
-  command = "npm run build"
-  publish = "dist"
+  command  = "npm run build"
+  publish  = "dist"
+  functions = "netlify/functions"
+
+# Redirect untuk fungsi push
+[[redirects]]
+  from = "/notifications/subscribe"
+  to   = "/.netlify/functions/subscribe"
+  status = 200
 
 [[redirects]]
-  from = "/*"
-  to = "/index.html"
+  from = "/notifications/send"
+  to   = "/.netlify/functions/send"
   status = 200
+
+# (Opsional) SPA fallback — letakkan PALING BAWAH agar tidak menimpa routes lain
+# [[redirects]]
+#   from = "/*"
+#   to   = "/index.html"
+#   status = 200

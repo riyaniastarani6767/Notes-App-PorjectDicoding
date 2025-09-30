@@ -1,44 +1,89 @@
-const VAPID_PUBLIC_KEY = "REPLACE_WITH_VAPID_PUBLIC_KEY";
+// const VAPID_PUBLIC_KEY = "REPLACE_WITH_VAPID_PUBLIC_KEY";
+
+// function urlBase64ToUint8Array(base64String) {
+//   const padding = "=".repeat((4 - (base64String.length % 4)) % 4);
+//   const base64 = (base64String + padding).replace(/-/g, "+").replace(/_/g, "/");
+//   const rawData = atob(base64);
+//   const outputArray = new Uint8Array(rawData.length);
+//   for (let i = 0; i < rawData.length; ++i)
+//     outputArray[i] = rawData.charCodeAt(i);
+//   return outputArray;
+// }
+
+// export async function ensurePermission() {
+//   if (!("Notification" in window))
+//     throw new Error("Browser tidak mendukung Notification.");
+//   if (Notification.permission === "granted") return true;
+//   const perm = await Notification.requestPermission();
+//   return perm === "granted";
+// }
+
+// export async function subscribePush() {
+//   const ok = await ensurePermission();
+//   if (!ok) throw new Error("Izin notifikasi ditolak.");
+//   const reg = await navigator.serviceWorker.ready;
+//   const sub = await reg.pushManager.subscribe({
+//     userVisibleOnly: true,
+//     applicationServerKey: urlBase64ToUint8Array(VAPID_PUBLIC_KEY),
+//   });
+
+//   return sub;
+// }
+
+// export async function unsubscribePush() {
+//   const reg = await navigator.serviceWorker.ready;
+//   const sub = await reg.pushManager.getSubscription();
+//   if (sub) {
+//     await sub.unsubscribe();
+//   }
+// }
+
+// export async function getPushStatus() {
+//   const reg = await navigator.serviceWorker.ready;
+//   return !!(await reg.pushManager.getSubscription());
+// }
+
+// src/scripts/utils/push.js
+const VAPID_PUBLIC_KEY =
+  "BMDksHjbS7hoqJkQmdkucSZWEkUe_ZclLfO1OJSST65lsdrN0YWruY00tf2DYh6PZbKcNvxe-jRy1Bfs_zBqE1Q";
 
 function urlBase64ToUint8Array(base64String) {
   const padding = "=".repeat((4 - (base64String.length % 4)) % 4);
   const base64 = (base64String + padding).replace(/-/g, "+").replace(/_/g, "/");
-  const rawData = atob(base64);
-  const outputArray = new Uint8Array(rawData.length);
-  for (let i = 0; i < rawData.length; ++i)
-    outputArray[i] = rawData.charCodeAt(i);
-  return outputArray;
+  const raw = atob(base64);
+  const out = new Uint8Array(raw.length);
+  for (let i = 0; i < raw.length; ++i) out[i] = raw.charCodeAt(i);
+  return out;
 }
 
-export async function ensurePermission() {
+export async function enablePush() {
+  if (!("serviceWorker" in navigator)) throw new Error("SW tidak didukung");
   if (!("Notification" in window))
-    throw new Error("Browser tidak mendukung Notification.");
-  if (Notification.permission === "granted") return true;
+    throw new Error("Notification API tidak didukung");
+
   const perm = await Notification.requestPermission();
-  return perm === "granted";
-}
+  if (perm !== "granted") throw new Error("Izin notifikasi ditolak");
 
-export async function subscribePush() {
-  const ok = await ensurePermission();
-  if (!ok) throw new Error("Izin notifikasi ditolak.");
   const reg = await navigator.serviceWorker.ready;
-  const sub = await reg.pushManager.subscribe({
-    userVisibleOnly: true,
-    applicationServerKey: urlBase64ToUint8Array(VAPID_PUBLIC_KEY),
-  });
 
-  return sub;
-}
-
-export async function unsubscribePush() {
-  const reg = await navigator.serviceWorker.ready;
-  const sub = await reg.pushManager.getSubscription();
-  if (sub) {
-    await sub.unsubscribe();
+  let sub = await reg.pushManager.getSubscription();
+  if (!sub) {
+    sub = await reg.pushManager.subscribe({
+      userVisibleOnly: true,
+      applicationServerKey: urlBase64ToUint8Array(VAPID_PUBLIC_KEY),
+    });
   }
+
+  // === WAJIB untuk penilaian: kirim subscription ke server ===
+  const res = await fetch("/notifications/subscribe", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(sub),
+  });
+  if (!res.ok) throw new Error("Gagal mendaftar subscription ke server");
 }
 
-export async function getPushStatus() {
-  const reg = await navigator.serviceWorker.ready;
-  return !!(await reg.pushManager.getSubscription());
+export async function sendTestPush() {
+  const res = await fetch("/notifications/send", { method: "POST" });
+  if (!res.ok) throw new Error("Gagal mengirim push uji");
 }
