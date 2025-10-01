@@ -50,8 +50,7 @@
 // };
 
 // netlify/functions/subscribe.js
-import { getStore } from "@netlify/blobs";
-
+// netlify/functions/subscribe.mjs
 export async function handler(event) {
   if (event.httpMethod !== "POST") {
     return { statusCode: 405, body: "Method Not Allowed" };
@@ -64,15 +63,20 @@ export async function handler(event) {
       return { statusCode: 400, body: "Invalid subscription" };
     }
 
-    const store = getStore("push-subs");
-    const raw = (await store.get("list")) || "[]";
-    const list = JSON.parse(raw);
-
-    if (!list.find((s) => s.endpoint === sub.endpoint)) {
-      list.push(sub);
-      await store.set("list", JSON.stringify(list), {
-        contentType: "application/json",
-      });
+    // --- Simpan ke Blobs JIKA tersedia; kalau tidak, tetap return OK ---
+    try {
+      const { getStore } = await import("@netlify/blobs");
+      const store = getStore("push-subs");
+      const raw = (await store.get("list")) || "[]";
+      const list = JSON.parse(raw);
+      if (!list.find((s) => s.endpoint === sub.endpoint)) {
+        list.push(sub);
+        await store.set("list", JSON.stringify(list), {
+          contentType: "application/json",
+        });
+      }
+    } catch {
+      // Blobs tidak tersedia → abaikan, tetap sukses
     }
 
     return { statusCode: 201, body: "OK" };
