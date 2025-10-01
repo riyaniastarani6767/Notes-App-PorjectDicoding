@@ -22,8 +22,22 @@
     <!-- Skip to content fokus ke konten utama -->
     <a class="skip-link" href="#main-content">Lewati ke konten</a>
 
-    <!-- Root SPA -->
-    <div id="app"></div>
+    <!-- Struktur semantik dasar -->
+    <header>
+      <nav aria-label="Navigasi utama">
+        <!-- Dummy link, akan diganti SPA -->
+        <a href="#/">Beranda</a>
+      </nav>
+    </header>
+
+    <main id="main-content" class="container">
+      <!-- Root SPA -->
+      <div id="app"></div>
+    </main>
+
+    <footer>
+      <p>© 2025 StoryMap</p>
+    </footer>
 
     <script type="module" src="/src/main.js"></script>
 
